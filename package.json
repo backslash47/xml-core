@@ -1,5 +1,5 @@
 {
-  "name": "@iq/xml-core",
+  "name": "@inqool/xml-core",
   "version": "1.0.15",
   "description": "`xml-core` is a set of classes that make it easier to work with XML within the browser and node.",
   "main": "dist/index.js",
