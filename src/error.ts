@@ -1,74 +1,77 @@
 function printf(text: string, ...args: any[]) {
-    let msg: string = text;
-    const regFind = /[^%](%\d+)/g;
-    let match: RegExpExecArray | null = null;
-    const matches: Array<{ arg: string, index: number }> = [];
-    while (match = regFind.exec(msg)) {
-        matches.push({ arg: match[1], index: match.index });
-    }
+  let msg: string = text;
+  const regFind = /[^%](%\d+)/g;
+  let match: RegExpExecArray | null = null;
+  const matches: Array<{ arg: string; index: number }> = [];
+  while ((match = regFind.exec(msg))) {
+    matches.push({ arg: match[1], index: match.index });
+  }
 
-    // replace matches
-    for (let i = matches.length - 1; i >= 0; i--) {
-        const item = matches[i];
-        const arg = item.arg.substring(1);
-        const index = item.index + 1;
-        msg = msg.substring(0, index) + arguments[+arg] + msg.substring(index + 1 + arg.length);
-    }
+  // replace matches
+  for (let i = matches.length - 1; i >= 0; i--) {
+    const item = matches[i];
+    const arg = item.arg.substring(1);
+    const index = item.index + 1;
+    msg =
+      msg.substring(0, index) +
+      arguments[+arg] +
+      msg.substring(index + 1 + arg.length);
+  }
 
-    // convert %% -> %
-    msg = msg.replace("%%", "%");
+  // convert %% -> %
+  msg = msg.replace("%%", "%");
 
-    return msg;
+  return msg;
 }
 
 function padNum(num: number, size: number): string {
-    let s = num + "";
-    while (s.length < size) {
-        s = "0" + s;
-    }
-    return s;
+  let s = num + "";
+  while (s.length < size) {
+    s = "0" + s;
+  }
+  return s;
 }
 
 export class XmlError implements Error {
-    public stack: any;
-    public code: number;
-    public name: string;
-    public message: string;
-    protected readonly prefix = "XMLJS";
-    constructor(code: XE, ...args: any[]) {
-        this.code = code;
-        this.name = (this.constructor as any).name;
-        arguments[0] = xes[code];
-        const message = printf.apply(this, arguments);
-        this.message = `${this.prefix}${padNum(code, 4)}: ${message}`;
-        this.stack = (new Error(this.message) as any).stack;
-    }
+  public stack: any;
+  public code: number;
+  public name: string;
+  public message: string;
+  protected readonly prefix = "XMLJS";
+  constructor(code: XE, ...args: any[]) {
+    this.code = code;
+    this.name = (this.constructor as any).name;
+    arguments[0] = xes[code];
+    const message = printf.apply(this, arguments as any);
+    this.message = `${this.prefix}${padNum(code, 4)}: ${message}`;
+    this.stack = (new Error(this.message) as any).stack;
+  }
 }
 
 export enum XE {
-    NONE,
-    NULL_REFERENCE,
-    NULL_PARAM,
-    DECORATOR_NULL_PARAM,
-    COLLECTION_LIMIT,
-    METHOD_NOT_IMPLEMENTED,
-    METHOD_NOT_SUPPORTED,
-    PARAM_REQUIRED,
-    CONVERTER_UNSUPPORTED,
-    ELEMENT_MALFORMED,
-    ELEMENT_MISSING,
-    ATTRIBUTE_MISSING,
-    CONTENT_MISSING,
-    CRYPTOGRAPHIC,
-    CRYPTOGRAPHIC_NO_MODULE,
-    CRYPTOGRAPHIC_UNKNOWN_TRANSFORM,
-    ALGORITHM_NOT_SUPPORTED,
-    ALGORITHM_WRONG_NAME,
-    XML_EXCEPTION,
+  NONE,
+  NULL_REFERENCE,
+  NULL_PARAM,
+  DECORATOR_NULL_PARAM,
+  COLLECTION_LIMIT,
+  METHOD_NOT_IMPLEMENTED,
+  METHOD_NOT_SUPPORTED,
+  PARAM_REQUIRED,
+  CONVERTER_UNSUPPORTED,
+  ELEMENT_MALFORMED,
+  ELEMENT_MISSING,
+  ATTRIBUTE_MISSING,
+  CONTENT_MISSING,
+  CRYPTOGRAPHIC,
+  CRYPTOGRAPHIC_NO_MODULE,
+  CRYPTOGRAPHIC_UNKNOWN_TRANSFORM,
+  ALGORITHM_NOT_SUPPORTED,
+  ALGORITHM_WRONG_NAME,
+  XML_EXCEPTION
 }
 
 interface IXmlError {
-    [index: number]: string;
+  [index: number]: string;
 }
 
 const xes: IXmlError = {};
@@ -76,7 +79,8 @@ xes[XE.NONE] = "No decription";
 xes[XE.NULL_REFERENCE] = "Null reference";
 xes[XE.NULL_PARAM] = "'%1' has empty '%2' object";
 xes[XE.DECORATOR_NULL_PARAM] = "Decorator '%1' has empty '%2' parameter";
-xes[XE.COLLECTION_LIMIT] = "Collection of '%1' in element '%2' has wrong amount of items";
+xes[XE.COLLECTION_LIMIT] =
+  "Collection of '%1' in element '%2' has wrong amount of items";
 xes[XE.METHOD_NOT_IMPLEMENTED] = "Method is not implemented";
 xes[XE.METHOD_NOT_SUPPORTED] = "Method is not supported";
 xes[XE.PARAM_REQUIRED] = "Required parameter is missing '%1'";

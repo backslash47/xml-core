@@ -1,5 +1,5 @@
 {
-  "name": "xml-core",
+  "name": "@iq/xml-core",
   "version": "1.0.15",
   "description": "`xml-core` is a set of classes that make it easier to work with XML within the browser and node.",
   "main": "dist/index.js",
@@ -9,13 +9,18 @@
   "directories": {
     "test": "test"
   },
+  "peerDependencies": {
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.27"
+  },
   "dependencies": {
-    "@types/node": "^10.5.4",
-    "tslib": "^1.9.3",
-    "xmldom-alpha": "^0.1.28",
-    "xpath.js": "^1.1.0"
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.27",
+    "@types/xmldom": "^0.1.29",
+    "@types/node": "^10.12.0",
     "@types/mocha": "^5.2.5",
     "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
@@ -42,7 +47,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PeculiarVentures/xml-core.git"
+    "url": "git+https://github.com/backslash47/xml-core.git"
   },
   "keywords": [
     "xml"
@@ -50,9 +55,9 @@
   "author": "microshine",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/PeculiarVentures/xml-core.git/issues"
+    "url": "https://github.com/backslash47/xml-core.git/issues"
   },
-  "homepage": "https://github.com/PeculiarVentures/xml-core.git#readme",
+  "homepage": "https://github.com/backslash47/xml-core.git#readme",
   "nyc": {
     "extension": [
       ".ts",
