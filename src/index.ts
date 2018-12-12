@@ -8,3 +8,4 @@ export * from "./xml";
 export * from "./xml_collection";
 export * from "./xml_object";
 export * from "./namespace_manager";
+export * from "./dom";

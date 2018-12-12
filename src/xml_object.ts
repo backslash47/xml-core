@@ -1,9 +1,9 @@
-import { DOMParser, XMLSerializer } from "xmldom";
 import * as CONST from "./const";
+import { getParser, getSerializer } from "./dom";
 import { XE, XmlError } from "./error";
 import { Parse, SelectSingleNode } from "./utils";
-import { XmlNodeType } from "./xml";
-import { APPLICATION_XML } from "./xml";
+import { APPLICATION_XML, XmlNodeType } from "./xml";
+import { XmlCollection } from "./xml_collection";
 
 const DEFAULT_ROOT_NAME = "xml_root";
 
@@ -95,7 +95,7 @@ export class XmlObject implements IXmlSerializable {
       namespaceUri2 = ` xmlns${nsPrefix}="${namespaceUri}"`;
     }
     const name = `${namePrefix}${root}`;
-    const doc = new DOMParser().parseFromString(
+    const doc = getParser().parseFromString(
       `<${name}${namespaceUri2}></${name}>`,
       APPLICATION_XML
     );
@@ -590,7 +590,7 @@ export class XmlObject implements IXmlSerializable {
    */
   public toString(): string {
     const xml = this.GetXml();
-    return xml ? new XMLSerializer().serializeToString(xml) : "";
+    return xml ? getSerializer().serializeToString(xml) : "";
   }
 
   public GetElement(name: string, required: boolean = true) {
@@ -690,5 +690,3 @@ export class XmlObject implements IXmlSerializable {
     );
   }
 }
-
-import { XmlCollection } from "./xml_collection";

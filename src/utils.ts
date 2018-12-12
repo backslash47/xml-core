@@ -1,8 +1,8 @@
 /// <reference path="./types/index.d.ts" />
 
+import { evaluate } from "xpath-ts";
 import { APPLICATION_XML, XmlNodeType } from "./xml";
-import { DOMParser, XMLSerializer } from "xmldom";
-import { evaluate } from "xpath";
+import { getParser, getSerializer } from "./dom";
 
 function createNSResolver(document: Document): XPathNSResolver {
   const ns: any = {};
@@ -54,11 +54,11 @@ export function Parse(xmlString: string) {
    * the two-character sequence #xD #xA and any #xD that is not followed by #xA to a single #xA character.
    */
   xmlString = xmlString.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-  return new DOMParser().parseFromString(xmlString, APPLICATION_XML);
+  return getParser().parseFromString(xmlString, APPLICATION_XML);
 }
 
 export function Stringify(target: Node) {
-  return new XMLSerializer().serializeToString(target);
+  return getSerializer().serializeToString(target);
 }
 
 /**

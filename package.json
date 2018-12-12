@@ -10,29 +10,30 @@
     "test": "test"
   },
   "peerDependencies": {
-    "xmldom": "^0.1.27",
-    "xpath": "0.0.27"
+    "xpath-ts": "1.2.0"
   },
   "dependencies": {
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "xmldom": "^0.1.27",
-    "xpath": "0.0.27",
-    "@types/xmldom": "^0.1.29",
-    "@types/node": "^10.12.0",
+    "@types/jsdom": "^12.2.0",
     "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.0",
+    "@types/xmldom": "^0.1.29",
     "coveralls": "^3.0.2",
+    "jsdom": "^13.0.0",
     "mocha": "^5.2.0",
     "nyc": "^12.0.2",
     "rollup": "^0.63.4",
     "rollup-plugin-typescript": "^0.8.1",
     "ts-node": "^7.0.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "xmldom": "^0.1.27",
+    "xpath-ts": "1.1.1"
   },
   "scripts": {
     "clean": "rm -rf build/ buildjs/ coverage/ .nyc_output/ npm-debug.log npm-debug.log.*",
-    "test": "mocha",
+    "test": "mocha --require ts-node/register \"./test/**/*.test.ts\"",
     "prepare": "npm run build",
     "build": "npm run build:lib && npm run build:es5",
     "build:es5": "rollup -c",

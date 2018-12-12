@@ -1,45 +1,47 @@
 import * as assert from "assert";
 import { assign, Parse, SelectNamespaces, SelectSingleNode, Stringify } from "../src";
 
-context("utils", () => {
+export function executeTests() {
+    context("utils", () => {
 
-    it("assign", () => {
-        const obj = assign({}, { prop1: 1 }, { prop2: 2 }, { prop3: 3 }, { prop3: 4 });
+        it("assign", () => {
+            const obj = assign({}, { prop1: 1 }, { prop2: 2 }, { prop3: 3 }, { prop3: 4 });
 
-        assert.equal(obj.prop1, 1);
-        assert.equal(obj.prop2, 2);
-        assert.equal(obj.prop3, 4);
-    });
-
-    context("SelectSingleNode", () => {
-        it("Empty", () => {
-            const xml = Parse("<root><child/><child/><child/></root>");
-            const node = SelectSingleNode(xml, ".//second");
-            assert.equal(node === null, true);
+            assert.equal(obj.prop1, 1);
+            assert.equal(obj.prop2, 2);
+            assert.equal(obj.prop3, 4);
         });
-        it("First element", () => {
-            const xml = Parse(`<root><child attr="1"/><child attr="2"/><child attr="3"/></root>`);
-            const node = SelectSingleNode(xml, ".//child") as Element;
-            assert.equal(!!node, true);
-            assert.equal(node!.attributes.length, 1);
-            assert.equal(node!.attributes[0].value, "1");
+
+        context("SelectSingleNode", () => {
+            it("Empty", () => {
+                const xml = Parse("<root><child/><child/><child/></root>");
+                const node = SelectSingleNode(xml, ".//second");
+                assert.equal(node === null, true);
+            });
+            it("First element", () => {
+                const xml = Parse(`<root><child attr="1"/><child attr="2"/><child attr="3"/></root>`);
+                const node = SelectSingleNode(xml, ".//child") as Element;
+                assert.equal(!!node, true);
+                assert.equal(node!.attributes.length, 1);
+                assert.equal(node!.attributes[0].value, "1");
+            });
         });
-    });
 
-    it("SelectNamespaces", () => {
-        const xml = Parse(`<root xmlns="html://namespace1"><n1:child xmlns:n1="html://namespace2"/><n2:child xmlns:n2="html://namespace3"/></root>`);
-        const namespaces = SelectNamespaces(xml.documentElement);
-        assert.equal(Object.keys(namespaces).length, 3);
-        assert.equal(namespaces[""], "html://namespace1");
-        assert.equal(namespaces.n1, "html://namespace2");
-        assert.equal(namespaces.n2, "html://namespace3");
-    });
+        it("SelectNamespaces", () => {
+            const xml = Parse(`<root xmlns="html://namespace1"><n1:child xmlns:n1="html://namespace2"/><n2:child xmlns:n2="html://namespace3"/></root>`);
+            const namespaces = SelectNamespaces(xml.documentElement);
+            assert.equal(Object.keys(namespaces).length, 3);
+            assert.equal(namespaces[""], "html://namespace1");
+            assert.equal(namespaces.n1, "html://namespace2");
+            assert.equal(namespaces.n2, "html://namespace3");
+        });
 
-    it("Parse/Stringify", () => {
-        const xmlString = `<root xmlns="html://namespace1"><n1:child xmlns:n1="html://namespace2"/><n2:child xmlns:n2="html://namespace3"/></root>`;
-        const xml = Parse(xmlString);
-        const text = Stringify(xml);
-        assert.equal(xmlString, text);
-    });
+        it("Parse/Stringify", () => {
+            const xmlString = `<root xmlns="html://namespace1"><n1:child xmlns:n1="html://namespace2"/><n2:child xmlns:n2="html://namespace3"/></root>`;
+            const xml = Parse(xmlString);
+            const text = Stringify(xml);
+            assert.equal(xmlString, text);
+        });
 
-});
+    });
+}

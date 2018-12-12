@@ -2,96 +2,95 @@ import * as assert from "assert";
 import { XmlAttribute, XmlElement, XmlObject } from "../src";
 import { XmlBase64Converter, XmlBooleanConverter, XmlNumberConverter } from "../src";
 
-// const xmldom = require("xmldom-alpha");
-// const DOMParser = xmldom.DOMParser;
+export function executeTests() {
+    describe("Convertors", () => {
 
-describe("Convertors", () => {
+        it("String", () => {
 
-    it("String", () => {
+            @XmlElement({ localName: "test" })
+            class XmlTest extends XmlObject {
 
-        @XmlElement({ localName: "test" })
-        class XmlTest extends XmlObject {
+                @XmlAttribute({})
+                public Value: string;
 
-            @XmlAttribute({})
-            public Value: string;
+            }
 
-        }
+            const test = new XmlTest();
+            test.Value = "";
+            const xmlTest = test.toString();
+            const xml = `<test Value=""/>`;
+            assert.equal(xmlTest, xml);
 
-        const test = new XmlTest();
-        test.Value = "";
-        const xmlTest = test.toString();
-        const xml = `<test Value=""/>`;
-        assert.equal(xmlTest, xml);
+            const test2 = XmlTest.LoadXml(xml);
+            assert.equal(test2.Value, "");
+        });
 
-        const test2 = XmlTest.LoadXml(xml);
-        assert.equal(test2.Value, "");
+        it("Number", () => {
+
+    @XmlElement({ localName: "test" })
+    class XmlTest extends XmlObject {
+
+        @XmlAttribute({ converter: XmlNumberConverter })
+        public Value: number;
+
+    }
+
+    const test = new XmlTest();
+    test.Value = 15;
+    const xmlTest = test.toString();
+    const xml = `<test Value="15"/>`;
+    assert.equal(xmlTest, xml);
+
+    const test2 = XmlTest.LoadXml(xml);
+    assert.equal(test2.Value, 15);
+        });
+
+        it("Base64", () => {
+
+            @XmlElement({ localName: "test" })
+            class XmlTest extends XmlObject {
+
+                @XmlAttribute({ converter: XmlBase64Converter })
+                public Value: Uint8Array;
+
+            }
+
+            const test = new XmlTest();
+            test.Value = new Uint8Array([1, 0, 1]);
+            const xmlTest = test.toString();
+            const xml = `<test Value="AQAB"/>`;
+            assert.equal(xmlTest, xml);
+
+            const test2 = XmlTest.LoadXml(xml);
+            assert.equal(test2.Value.length, 3);
+            assert.equal(test2.Value[0], 1);
+            assert.equal(test2.Value[1], 0);
+            assert.equal(test2.Value[2], 1);
+        });
+
+        it("Boolean", () => {
+
+            @XmlElement({ localName: "test" })
+            class XmlTest extends XmlObject {
+
+                @XmlAttribute({ converter: XmlBooleanConverter })
+                public ValueTrue: boolean;
+
+                @XmlAttribute({ converter: XmlBooleanConverter })
+                public ValueFalse: boolean;
+
+            }
+
+            const test = new XmlTest();
+            test.ValueTrue = true;
+            test.ValueFalse = false;
+            const xmlTest = test.toString();
+            const xml = `<test ValueTrue="true" ValueFalse="false"/>`;
+            assert.equal(xmlTest, xml);
+
+            const test2 = XmlTest.LoadXml(xml);
+            assert.equal(test2.ValueTrue, true);
+            assert.equal(test2.ValueFalse, false);
+        });
     });
-
-    it("Number", () => {
-
-@XmlElement({ localName: "test" })
-class XmlTest extends XmlObject {
-
-    @XmlAttribute({ converter: XmlNumberConverter })
-    public Value: number;
-
 }
-
-const test = new XmlTest();
-test.Value = 15;
-const xmlTest = test.toString();
-const xml = `<test Value="15"/>`;
-assert.equal(xmlTest, xml);
-
-const test2 = XmlTest.LoadXml(xml);
-assert.equal(test2.Value, 15);
-    });
-
-    it("Base64", () => {
-
-        @XmlElement({ localName: "test" })
-        class XmlTest extends XmlObject {
-
-            @XmlAttribute({ converter: XmlBase64Converter })
-            public Value: Uint8Array;
-
-        }
-
-        const test = new XmlTest();
-        test.Value = new Uint8Array([1, 0, 1]);
-        const xmlTest = test.toString();
-        const xml = `<test Value="AQAB"/>`;
-        assert.equal(xmlTest, xml);
-
-        const test2 = XmlTest.LoadXml(xml);
-        assert.equal(test2.Value.length, 3);
-        assert.equal(test2.Value[0], 1);
-        assert.equal(test2.Value[1], 0);
-        assert.equal(test2.Value[2], 1);
-    });
-
-    it("Boolean", () => {
-
-        @XmlElement({ localName: "test" })
-        class XmlTest extends XmlObject {
-
-            @XmlAttribute({ converter: XmlBooleanConverter })
-            public ValueTrue: boolean;
-
-            @XmlAttribute({ converter: XmlBooleanConverter })
-            public ValueFalse: boolean;
-
-        }
-
-        const test = new XmlTest();
-        test.ValueTrue = true;
-        test.ValueFalse = false;
-        const xmlTest = test.toString();
-        const xml = `<test ValueTrue="true" ValueFalse="false"/>`;
-        assert.equal(xmlTest, xml);
-
-        const test2 = XmlTest.LoadXml(xml);
-        assert.equal(test2.ValueTrue, true);
-        assert.equal(test2.ValueFalse, false);
-    });
-});
