@@ -1,4 +1,5 @@
 import { DOMParser, XMLSerializer } from "xmldom";
+import { XPathEvaluator } from 'xpath-ts';
 import { install } from "../src";
 import { executeTests as executeConvertersTests } from "./converters";
 import { executeTests as executeDecoratorsTests } from "./decorators";
@@ -10,7 +11,7 @@ import { executeTests as executeUtilsTests } from "./utils";
 import { executeTests as executeXmlCollectionTests } from "./xml_collection";
 
 describe("xmldom", () => {
-  install(new DOMParser(), new XMLSerializer());
+  install(new DOMParser(), new XMLSerializer(), new XPathEvaluator({}));
 
   executeConvertersTests();
   executeDecoratorsTests();

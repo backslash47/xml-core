@@ -1,4 +1,5 @@
 import { JSDOM } from "jsdom";
+import { XPathEvaluator } from 'xpath-ts';
 import { install } from "../src";
 import { executeTests as executeConvertersTests } from "./converters";
 import { executeTests as executeDecoratorsTests } from "./decorators";
@@ -19,7 +20,7 @@ declare module "jsdom" {
 describe("jsdom", async () => {
   
   const jsdom = new JSDOM();
-  install(new jsdom.window.DOMParser(), new jsdom.window.XMLSerializer());
+  install(new jsdom.window.DOMParser(), new jsdom.window.XMLSerializer(), new XPathEvaluator({}));
 
   executeConvertersTests();
   executeDecoratorsTests();

@@ -1,8 +1,7 @@
 /// <reference path="./types/index.d.ts" />
 
-import { evaluate } from "xpath-ts";
 import { APPLICATION_XML, XmlNodeType } from "./xml";
-import { getParser, getSerializer } from "./dom";
+import { getParser, getSerializer, getXPathEvaluator } from "./dom";
 
 function createNSResolver(document: Document): XPathNSResolver {
   const ns: any = {};
@@ -29,7 +28,7 @@ function SelectNodesEx(node: Node, xPath: string): Node[] {
 
   const nsResolver = createNSResolver(doc);
 
-  const personIterator = evaluate(
+  const personIterator = getXPathEvaluator().evaluate(
     xPath,
     node,
     nsResolver,
