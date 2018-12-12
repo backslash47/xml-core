@@ -428,6 +428,10 @@ declare namespace XmlCore {
         protected CreateDocument(): Document;
     }
 
+    export function getParser(): DOMParser;
+    export function getSerializer(): XMLSerializer;
+    export function getXPathEvaluator(): XPathEvaluator;
+    export function install(parser: DOMParser, serializer: XMLSerializer, xpath: XPathEvaluator): void;
 }
 
 export = XmlCore;
